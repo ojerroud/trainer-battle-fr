@@ -1,0 +1,23 @@
+* {
+	text-align: center;
+}
+
+.table_gdg {
+	.player__header,
+	.zone__header {
+		min-width: 80px;
+		height: 40px;
+		border: 1px solid black;
+		font-weight: normal;
+	}
+
+	.zone__reward {
+		min-width: 80px;
+		height: 40px;
+		background-color: white;
+	}
+
+	.zone__reward.true {
+		background-color: lightgreen;
+	}
+}

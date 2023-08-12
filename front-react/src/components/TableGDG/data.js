@@ -1,0 +1,22 @@
+const zones = [
+	'NEILOPOLIS',
+	'HEDAK',
+	'VALLEE ARC',
+	'FORET BRUMEUSE',
+	'COTE ENSOLEILLEE',
+	'VOLCAN GRONDANT',
+	'CANYON DU TONNERRE',
+	'DESERT SENENITE',
+	'PLAINES ETOILEES',
+	'VALLEE CDL',
+	'MONTAGNE ENNEIGEE',
+	"ILE D'AUBEVILLE",
+	'PLATEAU DESTINEE',
+	'MARECAGE OUBLIE',
+	'LAC CRISTAL',
+	'TUMULUS DU DRAGON',
+];
+
+const players = ['Flowax', 'Biggie', 'Bamlet'];
+
+export { zones, players };
