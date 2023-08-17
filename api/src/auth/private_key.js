@@ -1,1 +1,1 @@
-module.exports = 'DSFDSF';
+module.exports = 'CUSTOM_PRIVATE_KEY';
