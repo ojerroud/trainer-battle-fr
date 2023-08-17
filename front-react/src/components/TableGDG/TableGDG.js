@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './TableGDG.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleZone } from '../../actions';
@@ -6,7 +6,23 @@ import { voiceSpeech } from '../../utils/voiceSpeech';
 
 function TableGDG() {
 	const { player, zone } = useSelector((state) => state);
+	const [data, setData] = useState(); // test api
 	const dispatch = useDispatch();
+
+	// test api
+	const fetchData = async () => {
+		try {
+			const res = await fetch('http://localhost:3000/api/player');
+			const jsonData = await res.json();
+			setData(jsonData);
+		} catch (error) {
+			console.error('Erreur lors de la récupération des données:', error);
+		}
+	};
+
+	useEffect(() => {
+		fetchData();
+	}, []); // test api
 
 	const handleZoneSpeechClick = (zone) => {
 		const playersInZone = player
@@ -24,6 +40,7 @@ function TableGDG() {
 
 	const handleMultiZoneSpeechClick = () => {
 		let textSpeechMultipleZone = '';
+		console.log(player);
 
 		for (const elem of zone) {
 			const playersInZone = player
@@ -44,6 +61,8 @@ function TableGDG() {
 
 	return (
 		<div className="table_gdg">
+			{console.log({ data })}
+			{/* test api */}
 			<table>
 				<thead className="players">
 					<tr>
@@ -86,7 +105,6 @@ function TableGDG() {
 					))}
 				</tbody>
 			</table>
-
 			<button
 				onClick={() => handleMultiZoneSpeechClick()}
 				style={{ padding: '10px' }}
