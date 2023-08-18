@@ -1,5 +1,4 @@
 const express = require('express');
-const morgan = require('morgan');
 const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -7,13 +6,12 @@ const sequelize = require('./src/db/sequelize');
 const corsOptions = require('./src/config/corsConfig');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 /** middlewares */
 
 app
 	.use(favicon(__dirname + '/favicon.ico'))
-	.use(morgan('dev'))
 	.use(cors(corsOptions))
 	.use(bodyParser.json());
 
@@ -27,6 +25,8 @@ require('./src/routes/createPlayer')(app);
 require('./src/routes/updatePlayer')(app);
 require('./src/routes/deletePlayer')(app);
 require('./src/routes/login')(app);
+
+app.use('/', (req, res) => res.json({ message: 'hello heroku !' }));
 
 /** gestion des pages not found */
 
