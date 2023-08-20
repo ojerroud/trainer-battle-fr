@@ -45,6 +45,25 @@ module.exports = (sequelize, DataTypes) => {
 							if (!validZoneKeys.includes(key)) {
 								throw new Error(`Zone incorrect: ${key}.`);
 							}
+							if (!Number.isInteger(value[key]) && value[key] < 0) {
+								throw new Error(
+									`Valeur incorrect pour la Zone ${key}: ${value[key]}`
+								);
+							}
+						}
+					},
+				},
+			},
+			rewards: {
+				type: DataTypes.JSON,
+				allowNull: false,
+				defaultValue: zonesDefaultValue,
+				validate: {
+					isValidZones(value) {
+						for (const key in value) {
+							if (!validZoneKeys.includes(key)) {
+								throw new Error(`Zone incorrect: ${key}.`);
+							}
 							if (value[key] !== 0 && value[key] !== 1) {
 								throw new Error(
 									`Valeur incorrect pour la Zone ${key}: ${value[key]}`

@@ -4,14 +4,31 @@ const UserModel = require('../models/user');
 const players = require('./mock-player');
 const bcrypt = require('bcrypt');
 
-const sequelize = new Sequelize('api_pokeland_legend_fr', 'root', '', {
-	host: 'localhost',
-	dialect: 'mariadb',
-	dialectOptions: {
-		timezone: 'Etc/GMT-2',
-	},
-	logging: true,
-});
+let sequelize;
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+const { DB_PASSWORD, DB_USERNAME, DB_HOST, DB_NAME } = process.env;
+
+if (isProduction) {
+	sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
+		host: DB_HOST,
+		dialect: 'mariadb',
+		dialectOptions: {
+			timezone: 'Etc/GMT-2',
+		},
+		logging: false,
+	});
+} else {
+	sequelize = new Sequelize('api_pokeland_legend_fr', 'root', '', {
+		host: 'localhost',
+		dialect: 'mariadb',
+		dialectOptions: {
+			timezone: 'Etc/GMT-2',
+		},
+		logging: false,
+	});
+}
 
 const Player = PlayerModel(sequelize, DataTypes);
 const User = UserModel(sequelize, DataTypes);
@@ -37,37 +54,38 @@ const zonesDefaultValue = {
 
 const initDb = async () => {
 	try {
-		await sequelize.sync({ force: true });
+		await sequelize.authenticate(); // Test de la connexion à la base de données
 
-		/** initialize players data */
+		// Synchronisation des modèles sans forcer la réinitialisation si les tables existent déjà
+		await sequelize.sync();
 
-		for (const player of players) {
-			const createdPlayer = await Player.create({
-				name: player.name,
-				zones: zonesDefaultValue,
-			});
+		console.log('Connected to the database.');
 
-			console.log(createdPlayer.toJSON());
+		// Vérifier si les joueurs existent déjà
+		const existingPlayers = await Player.findAll();
+		if (existingPlayers.length === 0) {
+			for (const player of players) {
+				Player.create({
+					name: player.name,
+					zones: zonesDefaultValue,
+					rewards: zonesDefaultValue,
+				}).then((createdPlayer) => console.log(createdPlayer.toJSON()));
+			}
 		}
 
-		/** initialize users data */
-		/** using bcrypt to encrypt password */
-
-		bcrypt.hash('user', 10).then(async (hash) => {
-			const createdUser = await User.create({
+		// Vérifier si l'utilisateur existe déjà
+		const existingUser = await User.findOne({ where: { username: 'user' } });
+		if (!existingUser) {
+			const hash = await bcrypt.hash('user', 10);
+			User.create({
 				username: 'user',
 				password: hash,
-			});
+			}).then((createdUser) => console.log(createdUser.toJSON()));
+		}
 
-			console.log(createdUser.toJSON());
-		});
-
-		console.log('La base de données a bien été initialisée.');
+		console.log('Database initialization complete.');
 	} catch (error) {
-		console.error(
-			"Une erreur est survenue lors de l'initialisation de la base de données:",
-			error
-		);
+		console.error('An error occurred during database initialization:', error);
 	}
 };
 

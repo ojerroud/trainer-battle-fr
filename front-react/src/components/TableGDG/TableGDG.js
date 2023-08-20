@@ -9,11 +9,27 @@ function TableGDG() {
 	const [data, setData] = useState(); // test api
 	const dispatch = useDispatch();
 
+	const body = {
+		username: 'user',
+		password: 'user',
+	};
+
 	// test api
 	const fetchData = async () => {
 		try {
+			const { token } = await fetch('http://localhost:3000/api/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json', // Définir le type de contenu comme JSON
+				},
+				body: JSON.stringify(body), // Convertir le corps en JSON
+			}).then((res) => res.json());
+
+			console.log({ token });
+
 			const res = await fetch('http://localhost:3000/api/player');
 			const jsonData = await res.json();
+
 			setData(jsonData);
 		} catch (error) {
 			console.error('Erreur lors de la récupération des données:', error);
@@ -22,6 +38,7 @@ function TableGDG() {
 
 	useEffect(() => {
 		fetchData();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []); // test api
 
 	const handleZoneSpeechClick = (zone) => {

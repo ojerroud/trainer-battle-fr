@@ -1,19 +1,18 @@
 const express = require('express');
 const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const sequelize = require('./src/db/sequelize');
-const corsOptions = require('./src/config/corsConfig');
+const cors = require('cors');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 /** middlewares */
 
 app
 	.use(favicon(__dirname + '/favicon.ico'))
-	.use(cors(corsOptions))
-	.use(bodyParser.json());
+	.use(bodyParser.json())
+	.use(cors());
 
 sequelize.initDb();
 
@@ -36,6 +35,6 @@ app.use(({ res }) => {
 	res.status(404).json({ message });
 });
 
-app.listen(port, () =>
-	console.log(`l'api est démarrer sur : http://localhost:${port}`)
+app.listen(PORT, () =>
+	console.log(`l'api est démarrer sur : http://localhost:${PORT}`)
 );
