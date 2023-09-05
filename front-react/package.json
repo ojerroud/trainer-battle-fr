@@ -14,6 +14,8 @@
 	},
 	"scripts": {
 		"start": "react-scripts start",
+		"start:dev": "REACT_APP_URL=http://localhost:3000 react-scripts start",
+		"start:prod": "REACT_APP_URL=https://powerful-island-64999-81c83e1ff02b.herokuapp.com react-scripts start",
 		"build": "react-scripts build"
 	},
 	"eslintConfig": {

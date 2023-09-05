@@ -2,13 +2,17 @@
 	text-align: center;
 }
 
-.table_gdg {
+.table_reward_gdg {
 	.player__header,
 	.zone__header {
 		min-width: 80px;
 		height: 40px;
 		border: 1px solid black;
 		font-weight: normal;
+	}
+
+	.zone__header {
+		padding: 0px 1em;
 	}
 
 	.zone__reward {

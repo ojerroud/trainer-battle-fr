@@ -1,45 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import './TableGDG.scss';
+import React from 'react';
+import './TableRewardGDG.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleZone } from '../../actions';
 import { voiceSpeech } from '../../utils/voiceSpeech';
+import { generateKey } from '../../utils/generateKey';
 
-function TableGDG() {
-	const { player, zone } = useSelector((state) => state);
-	const [data, setData] = useState(); // test api
+function TableRewardGDG() {
+	const player = useSelector((state) => state.player);
+	const zone = useSelector((state) => state.zone);
+
 	const dispatch = useDispatch();
-
-	const body = {
-		username: 'user',
-		password: 'user',
-	};
-
-	// test api
-	const fetchData = async () => {
-		try {
-			const { token } = await fetch('http://localhost:3000/api/login', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json', // Définir le type de contenu comme JSON
-				},
-				body: JSON.stringify(body), // Convertir le corps en JSON
-			}).then((res) => res.json());
-
-			console.log({ token });
-
-			const res = await fetch('http://localhost:3000/api/player');
-			const jsonData = await res.json();
-
-			setData(jsonData);
-		} catch (error) {
-			console.error('Erreur lors de la récupération des données:', error);
-		}
-	};
-
-	useEffect(() => {
-		fetchData();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []); // test api
 
 	const handleZoneSpeechClick = (zone) => {
 		const playersInZone = player
@@ -77,14 +47,15 @@ function TableGDG() {
 	};
 
 	return (
-		<div className="table_gdg">
-			{console.log({ data })}
-			{/* test api */}
+		<div className="table_reward_gdg">
 			<table>
 				<thead className="players">
 					<tr>
 						{['', ...player].map(({ name }, index) => (
-							<th className={`${index ? 'player__header' : ''}`} key={name}>
+							<th
+								className={`${index ? 'player__header' : ''}`}
+								key={generateKey(name)}
+							>
 								{name}
 							</th>
 						))}
@@ -92,10 +63,10 @@ function TableGDG() {
 				</thead>
 				<tbody>
 					{zone.map((zone) => (
-						<tr key={zone}>
+						<tr key={generateKey(zone)}>
 							<th
 								className="zone__header"
-								key={zone}
+								key={generateKey(zone)}
 								onClick={() => handleZoneSpeechClick(zone)}
 							>
 								{zone}
@@ -106,9 +77,11 @@ function TableGDG() {
 								).zones[zone];
 
 								return (
-									<td key={elem.name}>
+									<td key={generateKey(elem.name)}>
 										<button
-											className={`zone__reward ${currentPlayerZone === 1}`}
+											className={`zone__reward${
+												currentPlayerZone === 1 ? ' true' : ''
+											}`}
 											onClick={() =>
 												dispatch(toggleZone({ id: elem.id, zone }))
 											}
@@ -132,4 +105,4 @@ function TableGDG() {
 	);
 }
 
-export default TableGDG;
+export default TableRewardGDG;
