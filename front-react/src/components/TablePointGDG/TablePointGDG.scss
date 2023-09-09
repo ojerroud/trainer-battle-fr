@@ -3,12 +3,18 @@
 }
 
 .table_point_gdg {
+	.player__header {
+		max-width: 90px;
+	}
+
 	.player__header,
 	.zone__header {
-		min-width: 80px;
-		height: 40px;
 		border: 1px solid black;
 		font-weight: normal;
+		padding: 0 1em;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.zone__header {
@@ -23,5 +29,23 @@
 
 	.zone__reward.true {
 		background-color: lightgreen;
+	}
+
+	// td,
+	// th {
+	// 	width: 4em;
+	// }
+
+	.td__input {
+		// background-color: rgb(155, 96, 96);
+		// border: 1px solid blue;
+		width: 5em; /* Définissez la largeur du td__input */
+		height: 100%; /* Définissez la hauteur du td__input */
+
+		input {
+			width: 100%; /* Utilisez 100% de la largeur du parent (td__input) */
+			height: 100%; /* Utilisez 100% de la hauteur du parent (td__input) */
+			padding: 0; /* Supprimez tout rembourrage pour s'assurer que l'input est de la même taille que le parent */
+		}
 	}
 }

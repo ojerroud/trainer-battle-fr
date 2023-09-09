@@ -2,3 +2,4 @@ TODO:
 
 front: add token on redux, so we can use it.
 back: add verification on PUT method/
+front: generate reward

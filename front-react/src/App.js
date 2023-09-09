@@ -1,18 +1,22 @@
 import { Provider } from 'react-redux';
-// import TableRewardGDG from './components/TableRewardGDG/TableRewardGDG';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import TableRewardGDG from './components/TableRewardGDG/TableRewardGDG';
 import TablePointsGDG from './components/TablePointGDG/TablePointGDG';
 import { store } from './store/store';
+import NavBar from './components/NavBar/NavBar';
 import './App.css';
-// import Test from './components/Test/Test';
 
 function App() {
 	return (
 		<div className="App">
 			<Provider store={store}>
-				<TablePointsGDG />
-				{/* <Test /> */}
-				{/* <TableRewardGDG /> */}
-				{/* <TableGDG /> */}
+				<Router>
+					<NavBar />
+					<Routes>
+						<Route path="/tableau-points" element={<TablePointsGDG />} />
+						<Route path="/tableau-recompenses" element={<TableRewardGDG />} />
+					</Routes>
+				</Router>
 			</Provider>
 		</div>
 	);

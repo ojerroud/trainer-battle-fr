@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import './TablePointGDG.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { generateKey } from '../../utils/generateKey';
-import { updateRewardsValues } from '../../actions';
+import { updateZonesValues } from '../../actions';
+import './TablePointGDG.scss';
+// import { initialZones, rewardsPerZone } from '../../data/initialDatas';
 
 function TablePointsGDG() {
 	const player = useSelector((state) => state.player);
@@ -16,7 +17,6 @@ function TablePointsGDG() {
 		setFormSubmitted(true);
 
 		const formData = new FormData(e.target);
-		console.log({ formData, elem: e.target });
 		const updatedPlayers = JSON.parse(JSON.stringify(player));
 
 		for (const [name, value] of formData) {
@@ -28,11 +28,11 @@ function TablePointsGDG() {
 			);
 
 			if (currPlayer) {
-				currPlayer.rewards[currZone] = newValue;
+				currPlayer.zones[currZone] = newValue;
 			}
 		}
 
-		dispatch(updateRewardsValues(updatedPlayers));
+		dispatch(updateZonesValues(updatedPlayers));
 	};
 
 	const handleResetRewards = () => {
@@ -44,10 +44,10 @@ function TablePointsGDG() {
 		if (isConfirmed) {
 			const tmpPlayers = JSON.parse(JSON.stringify(player));
 			tmpPlayers.forEach((currPlayer) => {
-				zone.forEach((currZone) => (currPlayer.rewards[currZone] = 0));
+				zone.forEach((currZone) => (currPlayer.zones[currZone] = 0));
 			});
 
-			dispatch(updateRewardsValues(tmpPlayers));
+			dispatch(updateZonesValues(tmpPlayers));
 		}
 	};
 
@@ -76,15 +76,19 @@ function TablePointsGDG() {
 								{player.map((currPlayer) => {
 									const currentPlayerZone = player.find(
 										(players) => players.name === currPlayer.name
-									).rewards[currZone];
+									).zones[currZone];
 
 									return (
-										<td key={generateKey(currPlayer.name)}>
+										<td
+											className="td__input"
+											key={generateKey(currPlayer.name)}
+										>
 											<input
 												name={`${currPlayer.id}-${currZone}`}
 												key={generateKey(currPlayer.name, currZone)}
 												className={'zone__points'}
 												defaultValue={currentPlayerZone}
+												onClick={(e) => e.target.select()}
 											/>
 										</td>
 									);
@@ -96,6 +100,7 @@ function TablePointsGDG() {
 				<button type="reset" onClick={handleResetRewards}>
 					reset
 				</button>
+				{/* TODO: put the reward button when validate is done */}
 				<button type="submit">Valider</button> {/* Bouton de validation */}
 			</form>
 			{formSubmitted && <p>Le formulaire a été soumis avec succès.</p>}

@@ -1,9 +1,9 @@
 import React from 'react';
-import './TableRewardGDG.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleZone } from '../../actions';
+import { toggleRewards } from '../../actions';
 import { voiceSpeech } from '../../utils/voiceSpeech';
 import { generateKey } from '../../utils/generateKey';
+import './TableRewardGDG.scss';
 
 function TableRewardGDG() {
 	const player = useSelector((state) => state.player);
@@ -13,7 +13,7 @@ function TableRewardGDG() {
 
 	const handleZoneSpeechClick = (zone) => {
 		const playersInZone = player
-			.filter((e) => e.zones[zone] === 1)
+			.filter((e) => e.rewards[zone] === 1)
 			.map((e) => e.name);
 
 		const playerList =
@@ -31,7 +31,7 @@ function TableRewardGDG() {
 
 		for (const elem of zone) {
 			const playersInZone = player
-				.filter((e) => e.zones[elem] === 1)
+				.filter((e) => e.rewards[elem] === 1)
 				.map((e) => e.name);
 
 			const playerList =
@@ -48,6 +48,9 @@ function TableRewardGDG() {
 
 	return (
 		<div className="table_reward_gdg">
+			<p>
+				Clickez sur les boutons du tableau pour ajouter/retirer les récompenses.
+			</p>
 			<table>
 				<thead className="players">
 					<tr>
@@ -74,16 +77,16 @@ function TableRewardGDG() {
 							{player.map((elem) => {
 								const currentPlayerZone = player.find(
 									(players) => players.name === elem.name
-								).zones[zone];
+								).rewards[zone];
 
 								return (
-									<td key={generateKey(elem.name)}>
+									<td className="td__button" key={generateKey(elem.name)}>
 										<button
 											className={`zone__reward${
 												currentPlayerZone === 1 ? ' true' : ''
 											}`}
 											onClick={() =>
-												dispatch(toggleZone({ id: elem.id, zone }))
+												dispatch(toggleRewards({ id: elem.id, zone }))
 											}
 										>
 											{currentPlayerZone}
