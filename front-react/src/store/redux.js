@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
 	fetchPlayers,
-	updatePlayerZone,
-	updatePlayerRewards,
+	updatePlayerReward,
+	updatePlayerZones,
 } from '../api/api';
 import { initialZones } from '../data/initialDatas';
 
@@ -19,7 +19,7 @@ export const playerSLice = createSlice({
 				zones: Object.fromEntries(initialZones.map((zone) => [zone, 0])),
 			});
 		},
-		updateRewardsValues: (state, action) => {
+		updateZonesValues: (state, action) => {
 			const playersList = action.payload;
 
 			for (const player of state) {
@@ -28,25 +28,25 @@ export const playerSLice = createSlice({
 				);
 
 				if (currPlayer) {
-					const currPlayerRewardsJSON = JSON.stringify(currPlayer.rewards);
-					const playerRewardsJSON = JSON.stringify(player.rewards);
+					const currPlayerZonesJSON = JSON.stringify(currPlayer.zones);
+					const playerZonesJSON = JSON.stringify(player.zones);
 
-					if (currPlayerRewardsJSON !== playerRewardsJSON) {
-						player.rewards = currPlayer.rewards;
-						updatePlayerRewards({
+					if (currPlayerZonesJSON !== playerZonesJSON) {
+						player.zones = currPlayer.zones;
+						updatePlayerZones({
 							id: player.id,
-							rewards: { ...player.rewards },
+							zones: { ...player.zones },
 						});
 					}
 				}
 			}
 		},
-		toggleZone: (state, action) => {
+		toggleRewards: (state, action) => {
 			// payload: {id: INTEGER, zone: STRING}
 			const { id, zone } = action.payload;
 			const player = state.find((elem) => elem.id === id);
-			if (player) player.zones[zone] = player.zones[zone] === 0 ? 1 : 0;
-			updatePlayerZone(id, zone);
+			if (player) player.rewards[zone] = player.rewards[zone] === 0 ? 1 : 0;
+			updatePlayerReward(id, zone);
 		},
 		deletePlayer: (state, action) => {
 			return state.filter((elem) => elem.id !== action.payload);

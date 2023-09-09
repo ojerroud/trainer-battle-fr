@@ -46,7 +46,7 @@ export const fetchPlayers = async () => {
 	}
 };
 
-export const updatePlayerZone = async (id, zone) => {
+export const updatePlayerReward = async (id, zone) => {
 	try {
 		const { data, message } = await fetchPlayers();
 		const playerToUpdate = data.find((e) => e.id === id);
@@ -55,13 +55,13 @@ export const updatePlayerZone = async (id, zone) => {
 			throw new Error(`Player with id ${id} not found.` + message);
 		}
 
-		if (!playerToUpdate.zones.hasOwnProperty(zone)) {
+		if (!playerToUpdate.rewards.hasOwnProperty(zone)) {
 			throw new Error(
 				`Zone ${zone} not found for player with id ${id}.` + message
 			);
 		}
 
-		playerToUpdate.zones[zone] = playerToUpdate.zones[zone] === 0 ? 1 : 0;
+		playerToUpdate.rewards[zone] = playerToUpdate.rewards[zone] === 0 ? 1 : 0;
 
 		/** TODO put token on redux, so user is logged in or not */
 
@@ -83,7 +83,7 @@ export const updatePlayerZone = async (id, zone) => {
 	}
 };
 
-export const updatePlayerRewards = async ({ id, rewards }) => {
+export const updatePlayerZones = async ({ id, zones }) => {
 	try {
 		const { data, message } = await fetchPlayers();
 		const playerToUpdate = data.find((e) => e.id === +id);
@@ -92,7 +92,7 @@ export const updatePlayerRewards = async ({ id, rewards }) => {
 			throw new Error(`Player with id ${id} not found.` + message);
 		}
 
-		playerToUpdate.rewards = rewards;
+		playerToUpdate.zones = zones;
 
 		/** TODO put token on redux, so user is logged in or not */
 		const { username, password } = tempCredentials;

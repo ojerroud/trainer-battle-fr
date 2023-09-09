@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
 							if (!validZoneKeys.includes(key)) {
 								throw new Error(`Zone incorrect: ${key}.`);
 							}
-							if (value[key] < 0) {
+							if (!Number.isInteger(value[key]) && value[key] < 0) {
 								throw new Error(
 									`Valeur incorrect pour la Zone ${key}: ${value[key]}`
 								);

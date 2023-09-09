@@ -17,6 +17,25 @@ const initialZones = [
 	'TUMULUS DU DRAGON',
 ];
 
+const rewardsPerZone = [
+	{ NEILOPOLIS: 100 },
+	{ HEDAK: 100 },
+	{ 'VALLEE ARC': 40 },
+	{ 'FORET BRUMEUSE': 40 },
+	{ 'COTE ENSOLEILLEE': 40 },
+	{ 'VOLCAN GRONDANT': 40 },
+	{ 'CANYON DU TONNERRE': 40 },
+	{ 'DESERT SENENITE': 20 },
+	{ 'PLAINES ETOILEES': 20 },
+	{ 'VALLEE CDL': 20 },
+	{ 'MONTAGNE ENNEIGEE': 20 },
+	{ "ILE D'AUBEVILLE": 20 },
+	{ 'PLATEAU DESTINEE': 20 },
+	{ 'MARECAGE OUBLIE': 20 },
+	{ 'LAC CRISTAL': 20 },
+	{ 'TUMULUS DU DRAGON': 20 },
+];
+
 const initialPlayers = ['Flowax', 'Biggie', 'Bamlet'];
 
 const initialData = initialPlayers.map((name, index) => ({
@@ -26,4 +45,4 @@ const initialData = initialPlayers.map((name, index) => ({
 	rewards: Object.fromEntries(initialZones.map((zone) => [zone, 0])),
 }));
 
-export { initialZones, initialPlayers, initialData };
+export { initialZones, initialPlayers, initialData, rewardsPerZone };
